@@ -33,7 +33,6 @@ logging_file = config.get("default", "logFile", raw=True, fallback='config_data.
 logger.info('the logFile is {}'.format(logging_file))
 logger.info('the ports file is {}'.format(PortFile))
 
-
 PortFile = PortFile.split(',')
 try:
     print(__name__)

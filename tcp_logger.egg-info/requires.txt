@@ -2,3 +2,5 @@ socket
 requests
 nmap
 docopt
+python-nmap
+

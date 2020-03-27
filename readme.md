@@ -1,3 +1,5 @@
 // init
 
-python setup.py
+python setup.py build
+python -m tcp_logger
+

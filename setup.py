@@ -12,6 +12,7 @@ setup(
         "socket",
         "requests",
         "nmap",
-        "docopt"
+        "docopt",
+        "python-nmap"
     ]
 )

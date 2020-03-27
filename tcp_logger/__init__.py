@@ -2,7 +2,12 @@ import logging
 import socket
 import sys
 import threading
+import nmap
 
+config_server_port = '127.0.0.1'
+
+
+config_port = nmap.PortScanner()
 
 def ConfigLogger():
     logger = logging.getLogger(__name__)
@@ -29,23 +34,32 @@ class HoneyPot():
             sys.exit(1)
         pass
 
-    def ClientHandle(self, client_socket, ip, remote_port):
+    def Nwt(self,sourceIp,scanPort):
+        nm =  nmap.PortScanner
+        nm.scan(config_server_port,scanPort)
+        if nm[config_server_port].has_tcp():
+            logging.info(nm[config_server_port]['tcp'][scanPort])
+        else:
+            logging.info(nm[config_server_port].all_protocols())
 
+    def ClientHandle(self, client_socket, ip, remote_port):
         data = client_socket.recv(64)
+        self.Nwt(socket.gethostname(),remote_port)
         self.logger.info('connection from {0} {1}'.format(
             client_socket.getsockname(), data))
-        client_socket.send('access denied 403')
-        client_socket.client_socket()
+        client_socket.send('access denied 403'.encode('utf-8'))
+        # client_socket.client_socket()
 
     def startListen(self, port):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        port_address = ('127.0.0.1', 1999)
+        port_address = (config_server_port, int(port))
         # bind to the server port
         sock.bind(port_address)
         sock.listen(1)
         # self.ConfigureSocket()
         while True:
             client, address = sock.accept()
+            print(address)
             clientHandle = threading.Thread(
                 target=self.ClientHandle, args=(client, address[0], address[1]))
             clientHandle.start()
